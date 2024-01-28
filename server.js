@@ -11,7 +11,6 @@ dotenv.config();
 const app = express();
 connectDB();
 
-// CORS Configuration
 const corsOptions = {
   origin: [
     "http://localhost:3000",

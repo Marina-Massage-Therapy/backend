@@ -1,10 +1,10 @@
 import express from "express";
-const router = express.Router(); // Changed Router() to express.Router()
+const router = express.Router();
 import {
-    fetchTestimonials,
-    createTestimonial,
-    deleteTestimonial,
-    updateTestimonial
+  fetchTestimonials,
+  createTestimonial,
+  deleteTestimonial,
+  updateTestimonial,
 } from "../controllers/testimonial.js";
 
 router.get("/fetchTestimonials", fetchTestimonials);
