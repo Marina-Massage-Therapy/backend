@@ -1,44 +1,33 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
+import compression from "compression";
+import rootRoutes from "./routes/root.js";
+
+dotenv.config();
+
 const app = express();
-const api = require("./Routes/api");
-const cors = require("cors");
-const mongoose = require("mongoose");
-require("dotenv").config();
+connectDB();
 
-// Enable CORS with options
-app.use(cors());
+// CORS Configuration
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "https://olia.d2gg1uugd2fam3.amplifyapp.com"
+  ],
+};
 
-app.use(bodyParser.json({ type: "application/*+json" }));
-app.use(bodyParser.raw({ type: "application/vnd.custom-type" }));
-app.use(bodyParser.text({ type: "text/html" }));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
-  );
-  next();
-});
-
+app.use(cors(corsOptions));
+app.use(compression());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
-// app.use("/", api);
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    dbName: "Marina-Massage-Therapist",
-  })
-  .then(() => {
-    console.log("Connected to DB", process.env.MONGO_URI);
+app.use("/api", rootRoutes);
 
-    app.listen(process.env.PORT, function () {
-      console.log(`Express server is running on port ${process.env.PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const PORT = process.env.PORT || 4001;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
