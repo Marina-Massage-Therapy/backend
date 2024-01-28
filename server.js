@@ -15,7 +15,7 @@ connectDB();
 const corsOptions = {
   origin: [
     "http://localhost:3000",
-    "https://olia.d2gg1uugd2fam3.amplifyapp.com"
+    "https://main.d2tvvv5hcr4651.amplifyapp.com",
   ],
 };
 
